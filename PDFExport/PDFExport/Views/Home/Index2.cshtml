@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Index2";
+    var DataList = ViewBag.DataList;
+    var DataListSize = DataList.Count;
+}
+
+<h2>Index2</h2>
+
+<hr />
+@{ <ol>
+        @for (int i = 0; i < DataListSize; i++)
+        {
+
+            <li style="margin-top:8px;">
+                @DataList[i]
+            </li>
+
+        }
+    </ol>
+}

@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,8 +46,10 @@ namespace PDFExport.Models
             pdfTable01.AddCell(setCell("性　　　　　別", 1, 1, Element.ALIGN_CENTER, Font.NORMAL, 10, 15f));
             pdfTable01.AddCell(setCell("■男 □女", 1, 1, Element.ALIGN_LEFT, Font.NORMAL, 10, 15f));
 
-            Image img01 = iTextSharp.text.Image.GetInstance("C:/Users/412/Desktop/PDFExport/PDF_export/PDFExport/PDFExport/Models/Test.jpg");
-            img01.ScalePercent(7.8f);
+            Image img01 = iTextSharp.text.Image.GetInstance("C:/Users/tcher/Documents/avatar24-01.png");
+        
+            img01.ScalePercent(3.5f);
+
             PdfPCell cell01 = new PdfPCell(img01);
             cell01.Colspan = 1;//占用欄數
             cell01.Rowspan = 5;//占用列數

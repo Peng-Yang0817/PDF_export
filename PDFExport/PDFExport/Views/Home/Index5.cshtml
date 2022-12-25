@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index5";
+    var DataList = ViewBag.DataList;
+    int DataList_size = DataList.Count;
+}
+
+<hr />
+@{
+    <table class="table table-hover" width="100%">
+        <thead>
+            <tr>
+                <th width="15%">序列</th>
+                <th width="85%">內容</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < DataList_size; i++)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>
+                        <div>
+                            @Html.Raw(DataList[i])
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+}
+<hr />
+<script>
+    window.onload = function () {
+        let domain = "https://www.twitch.tv";
+
+        let aTags = document.querySelectorAll('.ScCoreLink-sc-16kq0mq-0.jKBAWW.tw-link');
+
+        for (let i = 0; i < aTags.length; i++) {
+            let href = aTags[i].getAttribute('href');
+            aTags[i].setAttribute('href', domain + href);
+        }
+
+        aTags = document.querySelectorAll("a[data-a-target='preview-card-image-link']")
+        for (let i = 0; i < aTags.length; i++) {
+            let href = aTags[i].getAttribute('href');
+            aTags[i].setAttribute('href', domain + href);
+        }
+
+        aTags = document.querySelectorAll("a[data-test-selector='preview-card-avatar']")
+        for (let i = 0; i < aTags.length; i++) {
+            let href = aTags[i].getAttribute('href');
+            aTags[i].setAttribute('href', domain + href);
+        }
+
+        aTags = document.querySelectorAll("a[data-a-target='preview-card-game-link']")
+        for (let i = 0; i < aTags.length; i++) {
+            let href = aTags[i].getAttribute('href');
+            aTags[i].setAttribute('href', domain + href);
+        }
+
+        aTags = document.querySelectorAll("a[class='ScTag-sc-14s7ciu-0 bOVWlO tw-tag']")
+        for (let i = 0; i < aTags.length; i++) {
+            let href = aTags[i].getAttribute('href');
+            aTags[i].setAttribute('href', domain + href);
+        }
+    };
+</script>
