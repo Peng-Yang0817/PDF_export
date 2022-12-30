@@ -259,6 +259,14 @@ namespace PDFExport.Controllers
             // 取得第一個工作表 (Sheet)
             HSSFSheet ws = (HSSFSheet)templateWorkbook.GetSheetAt(0);
 
+            // 複製資料行次數
+            int copyCount = 3;
+            for (int i = 0; i < copyCount; i++)
+            {
+                // 用for迴圈複製第二行，插入到第三行
+                ws.CopyRow(1, 2);
+            }
+
             // 在第二列的第一、二、三、四、五、六欄填入資料
             ws.GetRow(1).GetCell(0).SetCellValue("一號");
             ws.GetRow(1).GetCell(1).SetCellValue("力大山");
