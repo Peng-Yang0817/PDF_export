@@ -8,7 +8,9 @@
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 <div>
-    <a href="@Url.Action("madePDF","Home")">content</a>
+    <a href="@Url.Action("madePDF","Home")" class="btn btn-primary" style="margin-bottom:10px">PDFExport</a>
+    <br />
+    <a href="@Url.Action("ExportToExcel", "Home")" class="btn btn-success">ExcelExport</a>
 </div>
 <div class="row">
     <div class="col-md-4">

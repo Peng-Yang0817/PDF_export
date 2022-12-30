@@ -12,8 +12,12 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-// 這是要而外載的
+
 using HtmlAgilityPack;
+
+// 這是要而外載的
+using NPOI.HSSF.UserModel;
+using System.IO;
 
 namespace PDFExport.Controllers
 {
@@ -26,7 +30,6 @@ namespace PDFExport.Controllers
         }
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -244,8 +247,42 @@ namespace PDFExport.Controllers
             return View();
         }
 
+        public void ExportToExcel()
+        {
+            // 取得靜態資源檔案位置，並轉呈資料流
+            FileStream fs = new FileStream(string.Concat(Server.MapPath("~/Models/Excel/"), "基本資料下載.xls")
+            , FileMode.Open, FileAccess.ReadWrite);
 
+            // 建立 HSSFWorkbook 物件，代表 Excel 檔案
+            HSSFWorkbook templateWorkbook = new HSSFWorkbook(fs);
 
+            // 取得第一個工作表 (Sheet)
+            HSSFSheet ws = (HSSFSheet)templateWorkbook.GetSheetAt(0);
+
+            // 在第二列的第一、二、三、四、五、六欄填入資料
+            ws.GetRow(1).GetCell(0).SetCellValue("一號");
+            ws.GetRow(1).GetCell(1).SetCellValue("力大山");
+            ws.GetRow(1).GetCell(2).SetCellValue("23歲");
+            ws.GetRow(1).GetCell(3).SetCellValue("女性");
+            ws.GetRow(1).GetCell(4).SetCellValue("0911111111");
+            ws.GetRow(1).GetCell(5).SetCellValue("新北市大寮區");
+
+            // 設定輸出的 Content Type、檔名和下載檔案的標頭
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats";
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlPathEncode(
+                "基本資料匯出結果.xls"));
+
+            // 將 HSSFWorkbook 寫入記憶體
+            MemoryStream ms = new MemoryStream();
+            templateWorkbook.Write(ms);
+
+            // 將記憶體的資料寫回 Response.OutputStream
+            ms.WriteTo(Response.OutputStream);
+
+            // 結束回應
+            Response.End();
+        }
 
 
 
