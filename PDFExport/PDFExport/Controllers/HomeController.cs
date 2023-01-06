@@ -18,6 +18,8 @@ using HtmlAgilityPack;
 // 這是要而外載的
 using NPOI.HSSF.UserModel;
 using System.IO;
+using NPOI.SS.UserModel;
+using NPOI.XWPF.UserModel;
 
 namespace PDFExport.Controllers
 {
@@ -275,6 +277,32 @@ namespace PDFExport.Controllers
             ws.GetRow(1).GetCell(4).SetCellValue("0911111111");
             ws.GetRow(1).GetCell(5).SetCellValue("新北市大寮區");
 
+            string filePath = "C:/Users/tcher/Desktop/PDFExport/PDF_export/PDFExport/PDFExport/Content/img/Ptest.jpg";
+
+            FileStream fs1 = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+            byte[] data = new byte[fs1.Length];
+
+            using (fs1)
+            {
+                // 建立一個陣列來儲存資料流的資料
+                data = new byte[fs1.Length];
+                // 讀取資料流的資料到陣列中
+                fs1.Read(data, 0, data.Length);
+            }
+
+            // 取得圖片的插入位置，並插入圖片
+            int pictureIdx = templateWorkbook.AddPicture(data, NPOI.SS.UserModel.PictureType.JPEG);
+
+            // 建立 IPicture 實例
+            HSSFPatriarch patriarch = (HSSFPatriarch)ws.CreateDrawingPatriarch();
+
+            // 建立图片位置
+            HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, 0, 0, 1, 4);
+
+            // 插入圖片
+            IPicture picture = patriarch.CreatePicture(anchor, pictureIdx);
+
             // 設定輸出的 Content Type、檔名和下載檔案的標頭
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats";
@@ -292,7 +320,31 @@ namespace PDFExport.Controllers
             Response.End();
         }
 
+        public void WordExport()
+        {
+            // 取得靜態資源檔案位置，並轉呈資料流
+            FileStream fs = new FileStream(string.Concat(Server.MapPath("~/Models/Word/"), "履歷表.docx")
+            , FileMode.Open, FileAccess.ReadWrite);
+                //讀取檔案內容
+            XWPFDocument template = new XWPFDocument(fs);
 
+            //指定表格並插入值
+            XWPFTable xt = template.Tables[0];
+
+            xt.GetRow(1).GetCell(1).SetText("孫鵬洋");
+            xt.GetRow(2).GetCell(1).SetText("J6666566");
+            xt.GetRow(3).GetCell(1).SetText("新北市鱸魚區");
+            xt.GetRow(4).GetCell(1).SetText("0911111111");
+
+            //Return 給 Client
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats";
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlPathEncode("履歷表匯出.docx"));
+            MemoryStream ms = new MemoryStream();
+            template.Write(ms);
+            ms.WriteTo(Response.OutputStream);
+            Response.End();
+        }
 
         public ActionResult About()
         {
